@@ -1,0 +1,24 @@
+  File "/Users/nicole/ai相关的文件/YoloTry2/backend/services/video_capture/main.py", line 218
+    global video_capture
+    ^
+SyntaxError: name 'video_capture' is used prior to global declaration
+  File "/Users/nicole/ai相关的文件/YoloTry2/backend/services/video_capture/main.py", line 218
+    global video_capture
+    ^
+SyntaxError: name 'video_capture' is used prior to global declaration
+  File "/Users/nicole/ai相关的文件/YoloTry2/backend/services/video_capture/main.py", line 218
+    global video_capture
+    ^
+SyntaxError: name 'video_capture' is used prior to global declaration
+  File "/Users/nicole/ai相关的文件/YoloTry2/backend/services/video_capture/main.py", line 218
+    global video_capture
+    ^
+SyntaxError: name 'video_capture' is used prior to global declaration
+  File "/Users/nicole/ai相关的文件/YoloTry2/backend/services/video_capture/main.py", line 218
+    global video_capture
+    ^
+SyntaxError: name 'video_capture' is used prior to global declaration
+  File "/Users/nicole/ai相关的文件/YoloTry2/backend/services/video_capture/main.py", line 218
+    global video_capture
+    ^
+SyntaxError: name 'video_capture' is used prior to global declaration

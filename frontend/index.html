@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI导航系统 - 实时监控与控制</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto 1fr auto;
+            height: 100vh;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e74c3c;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.connected {
+            background: #27ae60;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .system-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        .main-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-section {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+
+        .video-container {
+            flex: 1;
+            position: relative;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .video-stream {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .video-info {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .control-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .control-button.primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .control-button.primary:hover {
+            background: #2980b9;
+        }
+
+        .control-button.secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .control-button.secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .panel-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-content {
+            padding: 15px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .ai-command {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .command-action {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .command-reason {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .command-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .obstacle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ecf0f1;
+            transition: background 0.3s;
+        }
+
+        .obstacle-item:hover {
+            background: #f8f9fa;
+        }
+
+        .obstacle-info {
+            flex: 1;
+        }
+
+        .obstacle-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .obstacle-details {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .danger-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .danger-high {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .danger-medium {
+            background: #f39c12;
+            color: white;
+        }
+
+        .danger-low {
+            background: #f1c40f;
+            color: #333;
+        }
+
+        .danger-ignore {
+            background: #27ae60;
+            color: white;
+        }
+
+        .manual-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .manual-button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .emergency-stop {
+            background: #e74c3c;
+            color: white;
+            grid-column: 1 / -1;
+        }
+
+        .emergency-stop:hover {
+            background: #c0392b;
+        }
+
+        .direction-button {
+            background: #3498db;
+            color: white;
+        }
+
+        .direction-button:hover {
+            background: #2980b9;
+        }
+
+        .footer {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .log-item {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin: 2px 0;
+        }
+
+        .log-item.error {
+            color: #e74c3c;
+        }
+
+        .log-item.warning {
+            color: #f39c12;
+        }
+
+        .log-item.success {
+            color: #27ae60;
+        }
+
+        .connection-info {
+            display: flex;
+            gap: 15px;
+            font-size: 12px;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: #7f8c8d;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #ecf0f1;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .voice-button {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .voice-button:hover {
+            background: #8e44ad;
+        }
+
+        .voice-button.active {
+            animation: pulse-voice 1s infinite;
+        }
+
+        @keyframes pulse-voice {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部状态栏 -->
+        <header class="header">
+            <h1>
+                <div class="status-indicator" id="connectionStatus"></div>
+                AI导航系统
+            </h1>
+            <div class="system-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="fpsValue">--</div>
+                    <div class="stat-label">FPS</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="latencyValue">--</div>
+                    <div class="stat-label">延迟(ms)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="objectCount">0</div>
+                    <div class="stat-label">检测物体</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="safetyLevel">未知</div>
+                    <div class="stat-label">安全等级</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主视频面板 -->
+        <main class="main-panel">
+            <div class="video-section">
+                <div class="video-tabs">
+                    <button class="tab-button active" data-tab="original">原始画面</button>
+                    <button class="tab-button" data-tab="grid">网格视图</button>
+                    <button class="tab-button" data-tab="detection">检测结果</button>
+                </div>
+                
+                <div class="video-container">
+                    <img class="video-stream" id="videoStream" src="" alt="视频流">
+                    <div class="video-overlay">
+                        <div class="video-info" id="videoInfo">
+                            分辨率: -- | 帧率: --
+                        </div>
+                        <button class="voice-button" id="voiceButton" title="语音控制">
+                            🎤
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="video-controls">
+                    <button class="control-button primary" onclick="toggleVideoStream()">开始/停止</button>
+                    <button class="control-button secondary" onclick="captureSnapshot()">截图</button>
+                    <button class="control-button secondary" onclick="toggleFullscreen()">全屏</button>
+                    <button class="control-button secondary" onclick="calibrateCamera()">校准相机</button>
+                </div>
+            </div>
+        </main>
+
+        <!-- 侧边面板 -->
+        <aside class="side-panel">
+            <!-- AI指令中心 -->
+            <div class="panel-section">
+                <div class="panel-header">
+                    🤖 AI指令中心
+                </div>
+                <div class="panel-content">
+                    <div class="ai-command" id="currentCommand">
+                        <div class="command-action">等待分析...</div>
+                        <div class="command-reason">系统正在初始化</div>
+                        <div class="command-meta">
+                            <span>优先级: --</span>
+                            <span>置信度: --</span>
+                        </div>
+                    </div>
+                    
+                    <div class="manual-controls">
+                        <button class="manual-button emergency-stop" onclick="emergencyStop()">
+                            🛑 紧急停止
+                        </button>
+                        <button class="manual-button direction-button" onclick="manualCommand('前进')">
+                            ⬆️ 前进
+                        </button>
+                        <button class="manual-button direction-button" onclick="manualCommand('后退')">
+                            ⬇️ 后退
+                        </button>
+                        <button class="manual-button direction-button" onclick="manualCommand('左转')">
+                            ⬅️ 左转
+                        </button>
+                        <button class="manual-button direction-button" onclick="manualCommand('右转')">
+                            ➡️ 右转
+                        </button>
+                        <button class="manual-button direction-button" onclick="manualCommand('等待')">
+                            ⏸️ 等待
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 障碍物列表 -->
+            <div class="panel-section">
+                <div class="panel-header">
+                    🚧 障碍物检测
+                </div>
+                <div class="panel-content" id="obstaclesList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        正在检测...
+                    </div>
+                </div>
+            </div>
+
+            <!-- 系统状态 -->
+            <div class="panel-section">
+                <div class="panel-header">
+                    📊 系统状态
+                </div>
+                <div class="panel-content" id="systemStatus">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        正在加载...
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 底部日志区域 -->
+        <footer class="footer">
+            <div class="log-container" id="logContainer">
+                <div class="log-item">系统初始化中...</div>
+            </div>
+            <div class="connection-info">
+                <span>WebSocket: <span id="wsStatus">连接中...</span></span>
+                <span>API网关: <span id="apiStatus">检查中...</span></span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 全局变量
+        let websocket = null;
+        let currentTab = 'original';
+        let isStreamActive = false;
+        let apiBaseUrl = 'http://localhost:8000';
+        let wsUrl = 'ws://localhost:8000/ws';
+        let recognition = null;
+
+        // 初始化系统
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSystem();
+            setupTabSwitching();
+            setupVoiceControl();
+            startPeriodicUpdates();
+        });
+
+        // 系统初始化
+        async function initializeSystem() {
+            addLog('正在初始化AI导航系统...', 'info');
+            
+            try {
+                // 检查API连接
+                await checkApiConnection();
+                
+                // 建立WebSocket连接
+                connectWebSocket();
+                
+                // 开始视频流
+                startVideoStream();
+                
+                addLog('系统初始化完成', 'success');
+            } catch (error) {
+                addLog(`初始化失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 检查API连接
+        async function checkApiConnection() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/health`);
+                const data = await response.json();
+                
+                document.getElementById('apiStatus').textContent = '正常';
+                document.getElementById('connectionStatus').classList.add('connected');
+                
+                addLog('API网关连接成功', 'success');
+                return data;
+            } catch (error) {
+                document.getElementById('apiStatus').textContent = '异常';
+                throw new Error('API连接失败');
+            }
+        }
+
+        // WebSocket连接
+        function connectWebSocket() {
+            try {
+                websocket = new WebSocket(wsUrl);
+                
+                websocket.onopen = function(event) {
+                    document.getElementById('wsStatus').textContent = '已连接';
+                    addLog('WebSocket连接成功', 'success');
+                };
+
+                websocket.onmessage = function(event) {
+                    try {
+                        const data = JSON.parse(event.data);
+                        handleWebSocketMessage(data);
+                    } catch (error) {
+                        console.error('WebSocket消息解析失败:', error);
+                    }
+                };
+
+                websocket.onclose = function(event) {
+                    document.getElementById('wsStatus').textContent = '已断开';
+                    addLog('WebSocket连接断开，尝试重连...', 'warning');
+                    setTimeout(connectWebSocket, 3000);
+                };
+
+                websocket.onerror = function(error) {
+                    document.getElementById('wsStatus').textContent = '错误';
+                    addLog('WebSocket连接错误', 'error');
+                };
+            } catch (error) {
+                addLog(`WebSocket连接失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 处理WebSocket消息
+        function handleWebSocketMessage(data) {
+            switch (data.type) {
+                case 'obstacles_update':
+                    updateObstaclesList(data.data.detections);
+                    updateStats(data.data);
+                    break;
+                case 'navigation_command':
+                    updateCurrentCommand(data.data);
+                    break;
+                case 'manual_command':
+                    updateCurrentCommand(data.data);
+                    addLog(`手动指令: ${data.data.action}`, 'info');
+                    break;
+                case 'system_status':
+                    updateSystemStatus(data.data);
+                    break;
+            }
+        }
+
+        // 视频流管理
+        function startVideoStream() {
+            const videoElement = document.getElementById('videoStream');
+            updateVideoSource();
+            isStreamActive = true;
+            addLog('视频流已启动', 'success');
+        }
+
+        function updateVideoSource() {
+            const videoElement = document.getElementById('videoStream');
+            let url;
+            
+            switch (currentTab) {
+                case 'original':
+                    url = `${apiBaseUrl}/api/video/stream`;
+                    break;
+                case 'grid':
+                    // 对于网格视图，我们需要定期更新静态图像
+                    updateGridView();
+                    return;
+                case 'detection':
+                    // 检测结果视图
+                    updateDetectionView();
+                    return;
+            }
+            
+            videoElement.src = url + '?t=' + Date.now();
+        }
+
+        async function updateGridView() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/api/video/grid_view`);
+                const data = await response.json();
+                
+                if (data.grid_image) {
+                    document.getElementById('videoStream').src = 'data:image/jpeg;base64,' + data.grid_image;
+                }
+            } catch (error) {
+                console.error('获取网格视图失败:', error);
+            }
+        }
+
+        async function updateDetectionView() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/api/obstacles/analyze`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                // 这里需要服务端返回标注后的图像
+                // 暂时使用原始视频流
+                updateVideoSource();
+            } catch (error) {
+                console.error('获取检测视图失败:', error);
+            }
+        }
+
+        // 标签页切换
+        function setupTabSwitching() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 移除所有活跃状态
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 添加当前活跃状态
+                    this.classList.add('active');
+                    
+                    // 更新当前标签页
+                    currentTab = this.getAttribute('data-tab');
+                    
+                    // 更新视频源
+                    updateVideoSource();
+                    
+                    addLog(`切换到${this.textContent}`, 'info');
+                });
+            });
+        }
+
+        // 更新障碍物列表
+        function updateObstaclesList(obstacles) {
+            const container = document.getElementById('obstaclesList');
+            
+            if (!obstacles || obstacles.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #7f8c8d; padding: 20px;">暂无检测到障碍物</div>';
+                return;
+            }
+            
+            let html = '';
+            obstacles.forEach(obstacle => {
+                const dangerClass = `danger-${obstacle.danger_level === '高危险' ? 'high' : 
+                                              obstacle.danger_level === '中危险' ? 'medium' : 
+                                              obstacle.danger_level === '低危险' ? 'low' : 'ignore'}`;
+                
+                html += `
+                    <div class="obstacle-item">
+                        <div class="obstacle-info">
+                            <div class="obstacle-name">${obstacle.class_name}</div>
+                            <div class="obstacle-details">
+                                距离: ${obstacle.estimated_distance.toFixed(1)}m | 
+                                置信度: ${(obstacle.confidence * 100).toFixed(1)}%
+                            </div>
+                        </div>
+                        <div class="danger-badge ${dangerClass}">
+                            ${obstacle.danger_level}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // 更新当前指令
+        function updateCurrentCommand(command) {
+            const container = document.getElementById('currentCommand');
+            
+            container.innerHTML = `
+                <div class="command-action">${command.action}</div>
+                <div class="command-reason">${command.reason}</div>
+                <div class="command-meta">
+                    <span>优先级: ${command.priority}</span>
+                    <span>置信度: ${(command.confidence * 100).toFixed(1)}%</span>
+                </div>
+            `;
+            
+            // 语音播报
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(`${command.action}，${command.reason}`);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 1.2;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // 更新统计信息
+        function updateStats(data) {
+            if (data.total_objects !== undefined) {
+                document.getElementById('objectCount').textContent = data.total_objects;
+            }
+            
+            if (data.scene_analysis) {
+                document.getElementById('safetyLevel').textContent = data.scene_analysis.scene_safety;
+            }
+        }
+
+        // 更新系统状态
+        async function updateSystemStatus() {
+            try {
+                const response = await fetch(`${apiBaseUrl}/api/system/status`);
+                const data = await response.json();
+                
+                const container = document.getElementById('systemStatus');
+                let html = '';
+                
+                Object.entries(data.services_health).forEach(([service, status]) => {
+                    const statusClass = status.status === 'healthy' ? 'success' : 'error';
+                    html += `
+                        <div class="log-item ${statusClass}">
+                            ${service}: ${status.status}
+                            ${status.response_time ? `(${(status.response_time * 1000).toFixed(0)}ms)` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += `
+                    <div class="log-item">
+                        WebSocket连接: ${data.websocket_connections}
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('获取系统状态失败:', error);
+            }
+        }
+
+        // 手动控制
+        async function manualCommand(action) {
+            try {
+                const command = {
+                    action: action,
+                    parameters: { manual: true },
+                    reason: `用户手动执行${action}操作`,
+                    priority: 10,
+                    timestamp: new Date().toISOString()
+                };
+                
+                const response = await fetch(`${apiBaseUrl}/api/navigation/manual_command`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(command)
+                });
+                
+                if (response.ok) {
+                    addLog(`手动指令已发送: ${action}`, 'success');
+                } else {
+                    throw new Error('发送指令失败');
+                }
+                
+            } catch (error) {
+                addLog(`手动指令失败: ${error.message}`, 'error');
+            }
+        }
+
+        // 紧急停止
+        async function emergencyStop() {
+            await manualCommand('紧急停止');
+            addLog('紧急停止指令已发送', 'warning');
+        }
+
+        // 控制功能
+        function toggleVideoStream() {
+            isStreamActive = !isStreamActive;
+            if (isStreamActive) {
+                startVideoStream();
+            } else {
+                document.getElementById('videoStream').src = '';
+                addLog('视频流已停止', 'info');
+            }
+        }
+
+        async function captureSnapshot() {
+            try {
+                const response = await fetch(`http://localhost:8001/capture/snapshot`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                addLog(`截图已保存: ${data.filename}`, 'success');
+            } catch (error) {
+                addLog(`截图失败: ${error.message}`, 'error');
+            }
+        }
+
+        function toggleFullscreen() {
+            const videoContainer = document.querySelector('.video-container');
+            if (!document.fullscreenElement) {
+                videoContainer.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function calibrateCamera() {
+            addLog('相机校准功能尚未实现', 'info');
+            // TODO: 实现相机校准界面
+        }
+
+        // 语音控制
+        function setupVoiceControl() {
+            if (!('webkitSpeechRecognition' in window)) {
+                document.getElementById('voiceButton').style.display = 'none';
+                return;
+            }
+            
+            recognition = new webkitSpeechRecognition();
+            recognition.lang = 'zh-CN';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            
+            recognition.onstart = function() {
+                document.getElementById('voiceButton').classList.add('active');
+                addLog('语音识别已启动，请说话...', 'info');
+            };
+            
+            recognition.onend = function() {
+                document.getElementById('voiceButton').classList.remove('active');
+            };
+            
+            recognition.onresult = function(event) {
+                const command = event.results[0][0].transcript;
+                addLog(`语音识别: ${command}`, 'info');
+                processVoiceCommand(command);
+            };
+            
+            recognition.onerror = function(event) {
+                addLog(`语音识别错误: ${event.error}`, 'error');
+            };
+            
+            document.getElementById('voiceButton').addEventListener('click', function() {
+                if (recognition) {
+                    recognition.start();
+                }
+            });
+        }
+
+        // 处理语音指令
+        function processVoiceCommand(command) {
+            const commandMap = {
+                '前进': '前进',
+                '后退': '后退',
+                '左转': '左转',
+                '右转': '右转',
+                '停止': '停止',
+                '等待': '等待',
+                '紧急停止': '紧急停止'
+            };
+            
+            for (const [key, value] of Object.entries(commandMap)) {
+                if (command.includes(key)) {
+                    manualCommand(value);
+                    return;
+                }
+            }
+            
+            addLog(`未识别的语音指令: ${command}`, 'warning');
+        }
+
+        // 定期更新
+        function startPeriodicUpdates() {
+            // 每5秒更新系统状态
+            setInterval(updateSystemStatus, 5000);
+            
+            // 每2秒更新网格视图（如果当前在网格标签页）
+            setInterval(() => {
+                if (currentTab === 'grid') {
+                    updateGridView();
+                }
+            }, 2000);
+            
+            // 每1秒更新FPS和延迟显示
+            setInterval(updatePerformanceStats, 1000);
+        }
+
+        function updatePerformanceStats() {
+            // 模拟FPS和延迟数据，实际应用中应该从服务端获取
+            const fps = Math.floor(Math.random() * 5) + 25; // 25-30 FPS
+            const latency = Math.floor(Math.random() * 50) + 20; // 20-70ms
+            
+            document.getElementById('fpsValue').textContent = fps;
+            document.getElementById('latencyValue').textContent = latency;
+        }
+
+        // 日志系统
+        function addLog(message, type = 'info') {
+            const container = document.getElementById('logContainer');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            const logItem = document.createElement('div');
+            logItem.className = `log-item ${type}`;
+            logItem.textContent = `[${timestamp}] ${message}`;
+            
+            container.appendChild(logItem);
+            
+            // 保持最新的20条日志
+            const logs = container.querySelectorAll('.log-item');
+            if (logs.length > 20) {
+                container.removeChild(logs[0]);
+            }
+            
+            // 滚动到底部
+            container.scrollTop = container.scrollHeight;
+            
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        // 错误处理
+        window.addEventListener('error', function(event) {
+            addLog(`JavaScript错误: ${event.message}`, 'error');
+        });
+
+        // 页面卸载时清理
+        window.addEventListener('beforeunload', function() {
+            if (websocket) {
+                websocket.close();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+version: '3.8'
+
+services:
+  # Redis缓存服务
+  redis:
+    image: redis:7-alpine
+    container_name: ai_navigation_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - ai_navigation_net
+
+  # PostgreSQL数据库
+  postgres:
+    image: postgres:15-alpine
+    container_name: ai_navigation_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-navigation_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ai_navigation_net
+
+  # MinIO对象存储
+  minio:
+    image: minio/minio:latest
+    container_name: ai_navigation_minio
+    restart: unless-stopped
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-minioadmin}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - ai_navigation_net
+
+  # API网关服务
+  api_gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.api_gateway
+    container_name: ai_navigation_api_gateway
+    restart: unless-stopped
+    ports:
+      - "${API_GATEWAY_PORT:-8000}:8000"
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - VIDEO_CAPTURE_HOST=video_capture
+      - YOLO_DETECTION_HOST=yolo_detection
+      - PERSPECTIVE_CORRECTION_HOST=perspective_correction
+      - LLM_DECISION_HOST=llm_decision
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - ai_navigation_net
+    volumes:
+      - ./logs:/app/logs
+
+  # 视频采集服务
+  video_capture:
+    build:
+      context: .
+      dockerfile: Dockerfile.video_capture
+    container_name: ai_navigation_video_capture
+    restart: unless-stopped
+    ports:
+      - "${VIDEO_CAPTURE_PORT:-8001}:8001"
+    environment:
+      - CAMERA_URL=${CAMERA_URL:-0}
+    devices:
+      - /dev/video0:/dev/video0  # 摄像头设备映射
+    volumes:
+      - ./snapshots:/app/snapshots
+    networks:
+      - ai_navigation_net
+
+  # YOLO检测服务
+  yolo_detection:
+    build:
+      context: .
+      dockerfile: Dockerfile.yolo_detection
+    container_name: ai_navigation_yolo_detection
+    restart: unless-stopped
+    ports:
+      - "${YOLO_DETECTION_PORT:-8002}:8002"
+    environment:
+      - REDIS_HOST=redis
+      - VIDEO_CAPTURE_HOST=video_capture
+      - YOLO_MODEL_PATH=/app/models/yolov8n.pt
+    depends_on:
+      - redis
+      - video_capture
+    volumes:
+      - ./models:/app/models
+    networks:
+      - ai_navigation_net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]  # GPU支持（如果有NVIDIA GPU）
+
+  # 透视校正服务
+  perspective_correction:
+    build:
+      context: .
+      dockerfile: Dockerfile.perspective_correction
+    container_name: ai_navigation_perspective_correction
+    restart: unless-stopped
+    ports:
+      - "${PERSPECTIVE_CORRECTION_PORT:-8003}:8003"
+    environment:
+      - REDIS_HOST=redis
+      - VIDEO_CAPTURE_HOST=video_capture
+    depends_on:
+      - redis
+      - video_capture
+    networks:
+      - ai_navigation_net
+
+  # LLM决策服务
+  llm_decision:
+    build:
+      context: .
+      dockerfile: Dockerfile.llm_decision
+    container_name: ai_navigation_llm_decision
+    restart: unless-stopped
+    ports:
+      - "${LLM_DECISION_PORT:-8004}:8004"
+    environment:
+      - REDIS_HOST=redis
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LLM_MODEL=${LLM_MODEL:-gpt-3.5-turbo}
+    depends_on:
+      - redis
+    networks:
+      - ai_navigation_net
+
+  # 前端服务
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: ai_navigation_frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    environment:
+      - API_GATEWAY_URL=http://api_gateway:8000
+    depends_on:
+      - api_gateway
+    networks:
+      - ai_navigation_net
+
+  # Nginx反向代理（可选）
+  nginx:
+    image: nginx:alpine
+    container_name: ai_navigation_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - api_gateway
+    networks:
+      - ai_navigation_net
+
+  # 监控服务（可选）
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ai_navigation_prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      - ai_navigation_net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ai_navigation_grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    networks:
+      - ai_navigation_net
+
+networks:
+  ai_navigation_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  redis_data:
+    driver: local
+  postgres_data:
+    driver: local
+  minio_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local

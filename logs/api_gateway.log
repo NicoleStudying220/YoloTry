@@ -1,0 +1,236 @@
+/Users/nicole/ai相关的文件/YoloTry2/backend/services/api_gateway/main.py:291: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+/Users/nicole/ai相关的文件/YoloTry2/backend/services/api_gateway/main.py:297: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+INFO:     Started server process [32165]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
+API网关服务启动中...
+已配置的服务: ['video_capture', 'yolo_detection', 'perspective_correction', 'llm_decision']
+INFO:     127.0.0.1:56413 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56449 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56473 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56501 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56518 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56546 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56566 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56586 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56610 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56639 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56681 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56723 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56763 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56784 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56811 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56839 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56871 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56897 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56919 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56943 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56970 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56992 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57013 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57036 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57065 - "GET /v1/models HTTP/1.1" 404 Not Found
+/Users/nicole/ai相关的文件/YoloTry2/backend/services/api_gateway/main.py:291: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("startup")
+/Users/nicole/ai相关的文件/YoloTry2/backend/services/api_gateway/main.py:297: DeprecationWarning: 
+        on_event is deprecated, use lifespan event handlers instead.
+
+        Read more about it in the
+        [FastAPI docs for Lifespan Events](https://fastapi.tiangolo.com/advanced/events/).
+        
+  @app.on_event("shutdown")
+INFO:     Started server process [32271]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://localhost:8000 (Press CTRL+C to quit)
+API网关服务启动中...
+已配置的服务: ['video_capture', 'yolo_detection', 'perspective_correction', 'llm_decision']
+INFO:     127.0.0.1:57244 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57262 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57293 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57346 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57386 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57414 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57452 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57481 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57507 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57527 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57555 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57593 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57623 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57668 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57704 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57728 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57754 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57782 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57808 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57829 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57858 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57880 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57907 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57931 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57951 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57972 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58008 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58038 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58058 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58076 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58098 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58129 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58167 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58204 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58228 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58256 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58280 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58306 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58324 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58345 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58373 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58398 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58448 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58523 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58557 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58601 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58641 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58680 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58726 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58756 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58793 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58831 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58865 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58893 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58917 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58945 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58993 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59019 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59037 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59065 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59094 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59138 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59161 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59189 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59213 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59235 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59270 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59302 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59325 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59347 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59372 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59401 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59421 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59441 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59470 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59502 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59528 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59552 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59571 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59615 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59646 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59675 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59724 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59752 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59794 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59820 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59858 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59887 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59907 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59934 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59962 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59989 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60018 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60048 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60073 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60099 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60121 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60139 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60160 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60182 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60204 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60227 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60245 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60267 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60291 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60323 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60339 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60361 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60383 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60403 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60420 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60436 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60458 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60478 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60510 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60536 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60582 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60622 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60664 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60701 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60741 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60777 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60807 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60839 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60873 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60901 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60945 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60982 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61017 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61048 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61069 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61099 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61125 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61146 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61167 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61185 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61209 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61233 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61252 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61272 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61290 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61310 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61349 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61383 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61409 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61433 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61455 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61509 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61541 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61570 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61615 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61651 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61683 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61705 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61733 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61768 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61796 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61820 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61838 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61857 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61879 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61903 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61923 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61944 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61990 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62020 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62062 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62094 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62112 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62134 - "GET /v1/models HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62153 - "GET /v1/models HTTP/1.1" 404 Not Found
